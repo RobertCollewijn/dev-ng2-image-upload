@@ -1,3 +1,8 @@
 <h1>
   {{title}}
 </h1>
+
+<image-upload [(ngModel)]="imageUploadModel" [upload-config]="imageUploadConfig" (onError)="onError($event)"></image-upload>
+
+<button (click)="getImagesUploaded()">List Images to Console</button>
+

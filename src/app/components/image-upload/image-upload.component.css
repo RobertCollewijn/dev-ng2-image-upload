@@ -1,0 +1,40 @@
+.upload-container {
+  display: flex; }
+
+.upload-item {
+   position: relative;
+   display: inline-block;
+   max-width: 120px;
+   text-align: center; }
+
+.upload-item + .upload-item {
+   margin-left: 2rem; }
+
+.upload-title {
+   margin-top: 1rem;
+   word-wrap: break-word; }
+
+.upload-file-size {
+   font-weight: bold; }
+
+.image-area {
+   min-height: 35px;
+   position: relative; }
+
+.image-area > .upload-item-overlay {
+   display: none; }
+
+.image-area:hover > .upload-item-overlay {
+   display: block;
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   background-color: rgba(0,0,0,.6);
+   text-align: right;
+   z-index: 2; }
+
+.remove-upload {
+   font-size: 25px;
+   margin-right: 8px;
+   color: #ff0000;
+   cursor: pointer; }

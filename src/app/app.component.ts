@@ -1,8 +1,5 @@
-
-import { Component } from '@angular/core';
-import {ImageUpload,IImageUploadConfiguration } from "./models";
-
-
+import {Component} from '@angular/core';
+import {ImageUpload, IImageUploadConfiguration} from "./models";
 
 
 @Component({

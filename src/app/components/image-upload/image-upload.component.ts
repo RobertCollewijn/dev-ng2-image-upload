@@ -1,8 +1,8 @@
 import {Component, OnInit, Input, Output, EventEmitter, Self} from '@angular/core';
 import {ControlValueAccessor, NgModel} from "@angular/forms";
 
-import {ImageUpload, Error ,IImageUploadConfiguration, ImageUploadConfiguration} from "../../models";
-import {ErrorType} from "../../enums/error-type.enum";
+import {ImageUpload, Error, IImageUploadConfiguration, ImageUploadConfiguration} from "../../models";
+import {ErrorType} from "../../enums";
 
 const BYTES_IN_ONE_MB = 1048576;
 
@@ -10,7 +10,7 @@ const BYTES_IN_ONE_MB = 1048576;
   selector: 'image-upload',
   templateUrl: './image-upload.component.html',
   styleUrls: ['./image-upload.component.css'],
-  providers: [ NgModel ]
+  providers: [NgModel]
 })
 export class ImageUploadComponent implements ControlValueAccessor, OnInit {
 
@@ -230,7 +230,10 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
       let total = (this.totalUploadedSize + image.size) / BYTES_IN_ONE_MB;
 
       if (total > this.config.maxFilesizeSum) {
-        this._onError({ type: ErrorType.ExceedsUploadLimit, message: `Limit is set to ${this.config.maxFilesizeSum} MB, got ${total} MB.`});
+        this._onError({
+          type: ErrorType.ExceedsUploadLimit,
+          message: `Limit is set to ${this.config.maxFilesizeSum} MB, got ${total} MB.`
+        });
         return false;
       }
     }

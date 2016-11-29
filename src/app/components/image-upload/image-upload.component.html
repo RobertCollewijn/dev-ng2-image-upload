@@ -1,10 +1,10 @@
 <div class="row images-detail">
   <div class="col-xs-12">
 
-    <h4 *ngIf="cd.viewModel.length > 0">{{config.uploadedHeader}}</h4>
+    <h4 *ngIf="files.length > 0">{{config.uploadedHeader}}</h4>
 
     <div class="upload-container">
-      <div class="upload-item" *ngFor="let image of cd.viewModel; let i = index;">
+      <div class="upload-item" *ngFor="let image of files; let i = index;">
         <div class="image-area">
           <div class="upload-item-overlay">
             <span class="remove-upload" (click)="removeImage(i)">×</span>
@@ -19,7 +19,7 @@
 
     <h4>{{config.addSectionHeader}}</h4>
     <input type="file" #fileUpload style="display: none;" [accept]="config.accepts" (change)="upload(fileUpload.files, fileUpload)" />
-    <button class="btn btn-primary" (click)="fileUpload.click();"><i class="fa fa-upload"></i> {{config.buttonLabel}}</button>
-    <p *ngIf="config.accepts.indexOf('image/*') === -1"><small>Accepted image formats: {{config.accepts}}</small></p>
+    <button (click)="fileUpload.click();" class="btn btn-primary"><i class="fa fa-upload"></i> {{config.buttonLabel}}</button>
+    <p *ngIf="config.accepts.indexOf('image/*') === -1"><small>Accepted image formats: {{config.accepts + " " + config.accepts.indexOf('image/*')}}</small></p>
   </div>
 </div>

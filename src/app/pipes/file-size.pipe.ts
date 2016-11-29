@@ -1,5 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+/*
+ * Takes an integer representing a byte value and converts it
+ * into B / KB / MB / GB or TB.
+ * precision specifies the number of decimals.
+ */
+
 @Pipe({
   name: 'fileSize'
 })

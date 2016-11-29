@@ -9,16 +9,16 @@ const BYTES_IN_ONE_MB = 1048576;
 @Component({
   selector: 'image-upload',
   templateUrl: './image-upload.component.html',
-  styleUrls: ['./image-upload.component.css'],
-  providers: [NgModel]
+  styleUrls: ['./image-upload.component.css']
 })
 export class ImageUploadComponent implements ControlValueAccessor, OnInit {
-
+  debugger;
   /**
    * Configuration object to customize ImageUploadComponent, mapped to ImageUploadComponent.config
    *
    * @type {IImageUploadConfiguration}
    */
+
   @Input('upload-config') opts: IImageUploadConfiguration;
 
   /**
@@ -45,7 +45,7 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
 
   // -----------------------------------------------------------------
 
-  public cd: NgModel;
+ // public cd: NgModel;
 
   public onChange: any = Function.prototype;
   public onTouched: any = Function.prototype;
@@ -55,7 +55,7 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
    *
    * @type {ImageUploadConfiguration}
    */
-  public config: ImageUploadConfiguration;
+  public config: IImageUploadConfiguration;
 
   // -----------------------------------------------------------------
 
@@ -83,9 +83,10 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
    * Creates an instance of ImageUploadComponent.
    *
    */
-  constructor(@Self() cd: NgModel) {
-    this.cd = cd;
-    cd.valueAccessor = this;
+  constructor() {
+    debugger;
+   // this.cd = cd;
+  //  cd.valueAccessor = this;
 
     this.files = [];
     this.config = new ImageUploadConfiguration();
@@ -101,6 +102,42 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
   ngOnInit() {
     this._processOptions();
   }
+
+  /**
+   * Process configuration object to set personalisation.
+   *
+   * @private
+   */
+  private _processOptions() {
+    debugger;
+    if (this.opts != null) {
+      // addSectionHeader
+      if (this.opts.addSectionHeader != null) {
+        this.config.addSectionHeader = this.opts.addSectionHeader;
+      }
+
+      // uploadedHeader
+      if (this.opts.uploadedHeader != null) {
+        this.config.uploadedHeader = this.opts.uploadedHeader;
+      }
+
+      // buttonLabel
+      if (this.opts.buttonLabel != null) {
+        this.config.buttonLabel = this.opts.buttonLabel;
+      }
+
+      // accepts
+      if (this.opts.accepts != null) {
+        this.config.accepts = this.opts.accepts;
+      }
+
+      // maxFilesizeSum
+      if (this.opts.maxFilesizeSum != null) {
+        this.config.maxFilesizeSum = this.opts.maxFilesizeSum;
+      }
+    }
+  }
+
 
   get totalUploadedSize() {
     let total = 0;
@@ -142,45 +179,12 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
    */
   public removeImage(index: number) {
     let image = this.files.splice(index, 1);
-    this.cd.viewToModelUpdate(this.files);
+    //this.cd.viewToModelUpdate(this.files);
     this._onRemove(image[0]);
   }
 
   // -----------------------------------------------------------------
 
-  /**
-   * Process configuration object to set personalisation.
-   *
-   * @private
-   */
-  private _processOptions() {
-    if (this.opts != null) {
-      // addSectionHeader
-      if (this.opts.addSectionHeader != null) {
-        this.config.addSectionHeader = this.opts.addSectionHeader;
-      }
-
-      // uploadedHeader
-      if (this.opts.uploadedHeader != null) {
-        this.config.uploadedHeader = this.opts.uploadedHeader;
-      }
-
-      // buttonLabel
-      if (this.opts.buttonLabel != null) {
-        this.config.buttonLabel = this.opts.buttonLabel;
-      }
-
-      // accepts
-      if (this.opts.accepts != null) {
-        this.config.accepts = this.opts.accepts;
-      }
-
-      // maxFilesizeSum
-      if (this.opts.maxFilesizeSum != null) {
-        this.config.maxFilesizeSum = this.opts.maxFilesizeSum;
-      }
-    }
-  }
 
   /**
    * Emit an onremove event
@@ -221,7 +225,7 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
     this._onAdd(img);
 
     this.files.push(img);
-    this.cd.viewToModelUpdate(this.files);
+   // this.cd.viewToModelUpdate(this.files);
   }
 
   private _validateFilesize = (image: ImageUpload) => {

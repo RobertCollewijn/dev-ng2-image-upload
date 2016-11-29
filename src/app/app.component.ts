@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {ImageUpload, IImageUploadConfiguration} from "./models";
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,13 +9,15 @@ import {ImageUpload, IImageUploadConfiguration} from "./models";
 export class AppComponent {
   title = 'Ng2-Image-Upload';
 
-  public imageUploadConfig: IImageUploadConfiguration;
-
+  //public imageUploadConfig: IImageUploadConfiguration;
+  //by adding new the default values set in the model are used.
+  public imageUploadConfig: IImageUploadConfiguration; // = new ImageUploadConfiguration();
   public imageUploadModel: ImageUpload[];
 
   constructor() {
     this.imageUploadModel = [];
     this.imageUploadConfig = {
+      //the default values are overruled.
       maxFilesizeSum: 10,
       addSectionHeader: "Custom addSectionHeader",
       uploadedHeader: "Custom uploadedHeader",

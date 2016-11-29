@@ -2,7 +2,10 @@
   {{title}}
 </h1>
 
-<image-upload [(ngModel)]="imageUploadModel" [upload-config]="imageUploadConfig" (onError)="onError($event)"></image-upload>
+<image-upload
+  [upload-config]="imageUploadConfig" (onError)="onError($event)"></image-upload>
 
-<button (click)="getImagesUploaded()">List Images to Console</button>
+<div style="border-top: dashed;border-color:lightgray;margin-top: 12px;padding-top:4px;">
+  <button (click)="getImagesUploaded()">List Images to Console</button>
+</div>
 

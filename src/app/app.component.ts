@@ -20,7 +20,7 @@ export class AppComponent {
       maxFilesizeSum: 10,
       addSectionHeader: "Custom addSectionHeader",
       uploadedHeader: "Custom uploadedHeader",
-      buttonLabel: "Custom buttonLabel"//,
+      buttonLabel: "upload"//,
       //accepts: [".gif"]
     };
   }

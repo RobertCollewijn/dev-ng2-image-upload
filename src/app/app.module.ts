@@ -6,7 +6,8 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { ImageUploadComponent } from './components';
-import { FileSizePipe } from './pipes';
+import {FileSizePipe} from "./pipes/file-size.pipe";
+
 
 @NgModule({
   declarations: [

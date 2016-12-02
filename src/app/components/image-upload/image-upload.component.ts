@@ -12,7 +12,7 @@ const BYTES_IN_ONE_MB = 1048576;
   styleUrls: ['./image-upload.component.css']
 })
 export class ImageUploadComponent implements ControlValueAccessor, OnInit {
-  debugger;
+
   /**
    * Configuration object to customize ImageUploadComponent, mapped to ImageUploadComponent.config
    *
@@ -45,7 +45,7 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
 
   // -----------------------------------------------------------------
 
- // public cd: NgModel;
+  // public cd: NgModel;
 
   public onChange: any = Function.prototype;
   public onTouched: any = Function.prototype;
@@ -61,7 +61,7 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
 
   /**
    * Receives the File object and interprets
-   *
+   * https://developer.mozilla.org/en-US/docs/Web/API/FileReader
    * @private
    * @type {FileReader}
    */
@@ -84,9 +84,9 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
    *
    */
   constructor() {
-    debugger;
-   // this.cd = cd;
-  //  cd.valueAccessor = this;
+
+    // this.cd = cd;
+    //  cd.valueAccessor = this;
 
     this.files = [];
     this.config = new ImageUploadConfiguration();
@@ -94,6 +94,7 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
     this.fileReader = new FileReader();
 
     this.fileReader.addEventListener('load', this._fileReaderLoad);
+    this.fileReader.addEventListener('progress', this._fileReaderProgress);
   }
 
   /**
@@ -109,7 +110,7 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
    * @private
    */
   private _processOptions() {
-    debugger;
+
     if (this.opts != null) {
       // addSectionHeader
       if (this.opts.addSectionHeader != null) {
@@ -160,11 +161,23 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
    * @param {File[]} files
    */
   public upload(files: File[], elem: HTMLInputElement) {
+    debugger;
     let filesLength = files.length;
 
     if (filesLength > 0) {
       for (let i = 0; i < filesLength; i++) {
         this.currentFile = files[i];
+        let fileType = this.currentFile.type;
+        fileType = (fileType).substring(0, 5);
+        if (fileType.substring(0, 5)!='image') {
+          this._onError({
+            type: ErrorType.NoValidImage,
+            message: `The file is not a valid image.`
+          });
+          return false;
+
+        }
+        console.log( "Type: " + files[i].type)
         this.fileReader.readAsDataURL(this.currentFile);
       }
     }
@@ -203,29 +216,52 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
    * @param {ImageUpload} image
    */
   private _onAdd(image: ImageUpload) {
+    debugger;
     this.onAdd.emit(image);
   }
 
   private _onError(error: Error) {
+    debugger;
     this.onError.emit(error);
   }
 
+  private _fileReaderProgress = () => {
+    // debugger;
+  }
   /**
    * Called after file read
    *
    * @private
    */
   private _fileReaderLoad = () => {
-    let data = this.fileReader.result;
+    debugger;
+    let imgData = this.fileReader.result;
+    var image = new Image();
+    image.src = imgData;
 
-    let img = new ImageUpload(data, this.currentFile.name, this.currentFile.size);
+    let img = new ImageUpload(imgData, this.currentFile.name, this.currentFile.size, image.height, image.width);
 
+    if (!this._validateImage(img)) return;
     if (!this._validateFilesize(img)) return;
 
-    this._onAdd(img);
+    //this._onAdd(img); wat is hier de toegevoegde waarde van
 
     this.files.push(img);
-   // this.cd.viewToModelUpdate(this.files);
+    // this.cd.viewToModelUpdate(this.files);
+  }
+
+  private _validateImage = (image: ImageUpload) => {
+    debugger;
+    if (image.width === 0 || image.height===0) {
+      this._onError({
+        type: ErrorType.NoValidImage,
+        message: `The file: ${image.fileName} is not a valid image.`
+      });
+      return false;
+
+    }
+
+    return true;
   }
 
   private _validateFilesize = (image: ImageUpload) => {
@@ -245,11 +281,13 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
     return true;
   }
 
-  public registerOnChange(fn: (_: any) => {}): void {
+  public   registerOnChange(fn: (_: any) => {
+  }): void {
     this.onChange = fn;
   }
 
-  public registerOnTouched(fn: () => {}): void {
+  public   registerOnTouched(fn: () => {
+  }): void {
     this.onTouched = fn;
   }
 

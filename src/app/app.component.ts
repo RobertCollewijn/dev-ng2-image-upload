@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ImageUpload, IImageUploadConfiguration} from "./models";
+import {ImageUpload, IImageUploadConfiguration, Error} from "./models";
 
 @Component({
   selector: 'app-root',
@@ -35,7 +35,7 @@ export class AppComponent {
     console.log(this.imageUploadModel);
   }
 
-  public onError = (message: string) => {
-    console.log(message);
+  public onError = (message: Error) => {
+    console.error([message.message]);
   }
 }

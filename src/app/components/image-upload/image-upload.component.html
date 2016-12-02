@@ -5,14 +5,15 @@
 
     <div class="upload-container">
       <div class="upload-item" *ngFor="let image of files; let i = index;">
+        <p class="upload-title">{{image.fileName}}</p>
         <div class="image-area">
           <div class="upload-item-overlay">
             <span class="remove-upload" (click)="removeImage(i)">×</span>
           </div>
           <img [src]="image.data" style="max-height: 100px; max-width: 100px;" />
         </div>
+        <p class="upload-title">{{image.height}} X {{image.width}}</p>
 
-        <p class="upload-title">{{image.fileName}}</p>
         <p class="upload-file-size">{{image.size | fileSize:1}}</p>
       </div>
     </div>

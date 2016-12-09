@@ -19,7 +19,7 @@
     </div>
 
     <h4>{{config.addSectionHeader}}</h4>
-    <input type="file" #fileUpload style="display: none;" [accept]="config.accepts" (change)="upload(fileUpload.files, fileUpload)" />
+    <input #fileUpload style="display: none;" type="file" [accept]="config.accepts"  multiple = "multiple" (change)="upload(fileUpload.files, fileUpload)" />
     <button (click)="fileUpload.click();" class="btn btn-primary"><i class="fa fa-upload"></i> {{config.buttonLabel}}</button>
     <p *ngIf="config.accepts.indexOf('image/*') === -1"><small>Accepted image formats: {{config.accepts + " " + config.accepts.indexOf('image/*')}}</small></p>
   </div>

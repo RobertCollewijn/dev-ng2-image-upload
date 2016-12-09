@@ -9,7 +9,8 @@ const BYTES_IN_ONE_MB = 1048576;
 @Component({
   selector: 'image-upload',
   templateUrl: './image-upload.component.html',
-  styleUrls: ['./image-upload.component.css']
+  styleUrls: ['./image-upload.component.css'],
+  providers: [NgModel]
 })
 export class ImageUploadComponent implements ControlValueAccessor, OnInit {
 
@@ -45,7 +46,7 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
 
   // -----------------------------------------------------------------
 
-  // public cd: NgModel;
+  public cd: NgModel;
 
   public onChange: any = Function.prototype;
   public onTouched: any = Function.prototype;
@@ -83,16 +84,16 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
    * Creates an instance of ImageUploadComponent.
    *
    */
-  constructor() {
+  constructor(cd: NgModel) {
 
-    // this.cd = cd;
-    //  cd.valueAccessor = this;
+    this.cd = cd;
+    cd.valueAccessor = this;
 
     this.files = [];
+
     this.config = new ImageUploadConfiguration();
 
     this.fileReader = new FileReader();
-
     this.fileReader.addEventListener('load', this._fileReaderLoad);
     this.fileReader.addEventListener('progress', this._fileReaderProgress);
   }
@@ -151,9 +152,6 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
 
   // -----------------------------------------------------------------
 
-  public writeValue(value: any): void {
-
-  }
 
   /**
    * Upload file array
@@ -161,27 +159,20 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
    * @param {File[]} files
    */
   public upload(files: File[], elem: HTMLInputElement) {
-    debugger;
+
     let filesLength = files.length;
 
     if (filesLength > 0) {
       for (let i = 0; i < filesLength; i++) {
+        debugger;
         this.currentFile = files[i];
-        let fileType = this.currentFile.type;
-        fileType = (fileType).substring(0, 5);
-        if (fileType.substring(0, 5)!='image') {
-          this._onError({
-            type: ErrorType.NoValidImage,
-            message: `The file is not a valid image.`
-          });
-          return false;
+        //before reading file
+        if (!this._validateImage(this.currentFile.type)) return;
+        if (!this._validateFilesize(this.currentFile.size)) return;
 
-        }
-        console.log( "Type: " + files[i].type)
         this.fileReader.readAsDataURL(this.currentFile);
       }
     }
-
     elem.value = '';
   }
 
@@ -206,6 +197,7 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
    * @param {ImageUpload} image
    */
   private _onRemove(image: ImageUpload) {
+    debugger;
     this.onRemove.emit(image);
   }
 
@@ -229,45 +221,53 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
     // debugger;
   }
   /**
-   * Called after file read
-   *
+   * Called after file loaded
+   * This is a promisse
    * @private
    */
   private _fileReaderLoad = () => {
-    debugger;
     let imgData = this.fileReader.result;
     var image = new Image();
     image.src = imgData;
 
     let img = new ImageUpload(imgData, this.currentFile.name, this.currentFile.size, image.height, image.width);
 
-    if (!this._validateImage(img)) return;
-    if (!this._validateFilesize(img)) return;
+    if (!this._validateImageProportions(img)) return;
+    if (!this._validateFilesize(img.size)) return;
 
     //this._onAdd(img); wat is hier de toegevoegde waarde van
-
+//local
     this.files.push(img);
-    // this.cd.viewToModelUpdate(this.files);
+    //Upstream
+    this.cd.viewToModelUpdate(this.files);
   }
 
-  private _validateImage = (image: ImageUpload) => {
-    debugger;
-    if (image.width === 0 || image.height===0) {
+  //Validations
+  private _validateImage = (fileType: string) => {
+    if (fileType.substring(0, 5) != 'image') {
       this._onError({
         type: ErrorType.NoValidImage,
-        message: `The file: ${image.fileName} is not a valid image.`
+        message: `The file: '${this.currentFile.name}' is not a valid image.`
       });
       return false;
-
     }
+    return true
+  }
 
+  private _validateImageProportions = (image: ImageUpload) => {
+    if (image.width === 0 || image.height === 0) {
+      this._onError({
+        type: ErrorType.NoValidImage,
+        message: `The file: '${image.fileName}' is not a valid image.`
+      });
+      return false;
+    }
     return true;
   }
 
-  private _validateFilesize = (image: ImageUpload) => {
-    debugger;
+  private _validateFilesize = (imageSize: number) => {
     if (this.config.maxFilesizeSum != null) {
-      let total = (this.totalUploadedSize + image.size) / BYTES_IN_ONE_MB;
+      let total = (this.totalUploadedSize + imageSize) / BYTES_IN_ONE_MB;
 
       if (total > this.config.maxFilesizeSum) {
         this._onError({
@@ -277,8 +277,21 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
         return false;
       }
     }
-
     return true;
+  }
+
+
+  /**
+   * A bridge between a control and a native element.
+   *
+   * A `ControlValueAccessor` abstracts the operations of writing a new value to a
+   * DOM element representing an input control.
+   *
+   * Please see {@link DefaultValueAccessor} for more information.
+   */
+
+  public writeValue(value: any): void {
+
   }
 
   public   registerOnChange(fn: (_: any) => {
@@ -290,5 +303,6 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
   }): void {
     this.onTouched = fn;
   }
+
 
 }

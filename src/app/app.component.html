@@ -2,7 +2,7 @@
   {{title}}
 </h1>
 
-<image-upload
+<image-upload [(ngModel)]="imageUploadModel"
   [upload-config]="imageUploadConfig" (onError)="onError($event)"></image-upload>
 
 <div style="border-top: dashed;border-color:lightgray;margin-top: 12px;padding-top:4px;">

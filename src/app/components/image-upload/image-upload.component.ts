@@ -168,6 +168,7 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
         this.currentFile = files[i];
         //before reading file
         if (!this._validateImage(this.currentFile.type)) return;
+
         if (!this._validateFilesize(this.currentFile.size)) return;
 
         this.fileReader.readAsDataURL(this.currentFile);
@@ -226,6 +227,7 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
    * @private
    */
   private _fileReaderLoad = () => {
+    debugger;
     let imgData = this.fileReader.result;
     var image = new Image();
     image.src = imgData;

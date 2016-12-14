@@ -4,5 +4,7 @@ export interface IImageUploadConfiguration {
   buttonLabel?: string;
   accepts?: string[];
   maxFilesizeSum?: number;
+  style_maxHeight?: string;
+  style_maxWidth?: string;
 }
 

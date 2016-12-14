@@ -21,18 +21,12 @@ export class AppComponent {
       maxFilesizeSum: 10,
       addSectionHeader: "Custom addSectionHeader",
       uploadedHeader: "Custom uploadedHeader",
-      buttonLabel: "upload"//,
+      buttonLabel: "upload",
+      style_maxHeight: "150px",
+      style_maxWidth:"150px"
+
       //accepts: [".gif"]
     };
-  }
-
-  public imageUploadChanged = (value: any) => {
-    console.log(value);
-    console.log(this.imageUploadModel);
-  }
-
-  public getImagesUploaded = () => {
-    console.log(this.imageUploadModel);
   }
 
   public onError = (message: Error) => {

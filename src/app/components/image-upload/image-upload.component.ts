@@ -1,5 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, Self} from '@angular/core';
-import {ControlValueAccessor, NgModel} from "@angular/forms";
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
 import {ImageUpload, Error, IImageUploadConfiguration, ImageUploadConfiguration} from "../../models";
 import {ErrorType} from "../../enums";
@@ -10,86 +9,23 @@ const BYTES_IN_ONE_MB = 1048576;
   selector: 'image-upload',
   templateUrl: './image-upload.component.html',
   styleUrls: ['./image-upload.component.css'],
-  providers: [NgModel]
-})
-export class ImageUploadComponent implements ControlValueAccessor, OnInit {
 
-  /**
-   * Configuration object to customize ImageUploadComponent, mapped to ImageUploadComponent.config
-   *
-   * @type {IImageUploadConfiguration}
-   */
+})
+export class ImageUploadComponent implements OnInit {
 
   @Input('upload-config') opts: IImageUploadConfiguration;
 
-  /**
-   * OnChange event emitter, returns the removed single image.
-   *
-   * @type {EventEmitter<any>}
-   */
-  @Output() onRemove: EventEmitter<any> = new EventEmitter();
+  @Input('imageUploadModel') files: Array<ImageUpload>;
 
-  /**
-   * OnAdd event emitter, returns the added single image.
-   *
-   * @type {EventEmitter<any>}
-   */
-  @Output() onAdd: EventEmitter<any> = new EventEmitter();
-
-  /**
-   * OnError event emitter, returns an error message.
-   *
-   * @type {EventEmitter<any>}
-   * @memberOf ImageUploadComponent
-   */
   @Output() onError: EventEmitter<any> = new EventEmitter();
 
-  // -----------------------------------------------------------------
-
-  public cd: NgModel;
-
-  public onChange: any = Function.prototype;
-  public onTouched: any = Function.prototype;
-
-  /**
-   * Configuration object to customize ImageUploadComponent
-   *
-   * @type {ImageUploadConfiguration}
-   */
   public config: IImageUploadConfiguration;
 
-  // -----------------------------------------------------------------
-
-  /**
-   * Receives the File object and interprets
-   * https://developer.mozilla.org/en-US/docs/Web/API/FileReader
-   * @private
-   * @type {FileReader}
-   */
   private fileReader: FileReader;
 
-  /**
-   * Currently selected file object.
-   *
-   * @private
-   * @type {File}
-   */
   private currentFile: File;
 
-  private files: ImageUpload[];
-
-  // -----------------------------------------------------------------
-
-  /**
-   * Creates an instance of ImageUploadComponent.
-   *
-   */
-  constructor(cd: NgModel) {
-
-    this.cd = cd;
-    cd.valueAccessor = this;
-
-    this.files = [];
+  constructor() {
 
     this.config = new ImageUploadConfiguration();
 
@@ -137,6 +73,14 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
       if (this.opts.maxFilesizeSum != null) {
         this.config.maxFilesizeSum = this.opts.maxFilesizeSum;
       }
+
+      if (this.opts.style_maxHeight != null) {
+        this.config.style_maxHeight = this.opts.style_maxHeight;
+      }
+
+      if (this.opts.style_maxWidth != null) {
+        this.config.style_maxWidth = this.opts.style_maxWidth;
+      }
     }
   }
 
@@ -164,7 +108,7 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
 
     if (filesLength > 0) {
       for (let i = 0; i < filesLength; i++) {
-        debugger;
+     //   debugger;
         this.currentFile = files[i];
         //before reading file
         if (!this._validateImage(this.currentFile.type)) return;
@@ -185,41 +129,19 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
   public removeImage(index: number) {
     let image = this.files.splice(index, 1);
     //this.cd.viewToModelUpdate(this.files);
-    this._onRemove(image[0]);
+   // this._onRemove(image[0]);
   }
 
-  // -----------------------------------------------------------------
 
-
-  /**
-   * Emit an onremove event
-   *
-   * @private
-   * @param {ImageUpload} image
-   */
-  private _onRemove(image: ImageUpload) {
-    debugger;
-    this.onRemove.emit(image);
-  }
-
-  /**
-   * Emit an onadd event
-   *
-   * @private
-   * @param {ImageUpload} image
-   */
-  private _onAdd(image: ImageUpload) {
-    debugger;
-    this.onAdd.emit(image);
-  }
 
   private _onError(error: Error) {
-    debugger;
+   // debugger;
     this.onError.emit(error);
   }
 
   private _fileReaderProgress = () => {
     // debugger;
+    console.log("progress");
   }
   /**
    * Called after file loaded
@@ -227,8 +149,10 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
    * @private
    */
   private _fileReaderLoad = () => {
-    debugger;
+    //debugger;
+    console.log("_fileReaderLoad begin")
     let imgData = this.fileReader.result;
+    console.log("_fileReaderLoad result")
     var image = new Image();
     image.src = imgData;
 
@@ -239,9 +163,11 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
 
     //this._onAdd(img); wat is hier de toegevoegde waarde van
 //local
+    console.log("_fileReaderLoad push")
     this.files.push(img);
+    console.log("_fileReaderLoad end")
     //Upstream
-    this.cd.viewToModelUpdate(this.files);
+  //  this.cd.viewToModelUpdate(this.files);
   }
 
   //Validations
@@ -282,29 +208,6 @@ export class ImageUploadComponent implements ControlValueAccessor, OnInit {
     return true;
   }
 
-
-  /**
-   * A bridge between a control and a native element.
-   *
-   * A `ControlValueAccessor` abstracts the operations of writing a new value to a
-   * DOM element representing an input control.
-   *
-   * Please see {@link DefaultValueAccessor} for more information.
-   */
-
-  public writeValue(value: any): void {
-
-  }
-
-  public   registerOnChange(fn: (_: any) => {
-  }): void {
-    this.onChange = fn;
-  }
-
-  public   registerOnTouched(fn: () => {
-  }): void {
-    this.onTouched = fn;
-  }
 
 
 }

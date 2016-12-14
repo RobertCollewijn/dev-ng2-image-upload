@@ -1,11 +1,17 @@
-<h1>
+<h1 style="border-bottom: dashed;border-color:lightgray;margin-bottom: 4px;padding-bottom:12px;">
   {{title}}
 </h1>
 
-<image-upload [(ngModel)]="imageUploadModel"
-  [upload-config]="imageUploadConfig" (onError)="onError($event)"></image-upload>
+<image-upload
+              [(imageUploadModel)]="imageUploadModel"
+              [upload-config]="imageUploadConfig"
+              (onError)="onError($event)">
+</image-upload>
 
 <div style="border-top: dashed;border-color:lightgray;margin-top: 12px;padding-top:4px;">
-  <button (click)="getImagesUploaded()">List Images to Console</button>
+  <div *ngIf="imageUploadModel.length>0">
+    <h4>imageUploadModel</h4>
+    <pre>{{imageUploadModel | json }}</pre>
+  </div>
 </div>
 

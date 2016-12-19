@@ -2,6 +2,7 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
 import {ImageUpload, Error, IImageUploadConfiguration, ImageUploadConfiguration} from "../../models";
 import {ErrorType} from "../../enums";
+import {ImageDataService} from "../../services"
 
 const BYTES_IN_ONE_MB = 1048576;
 
@@ -10,22 +11,24 @@ const BYTES_IN_ONE_MB = 1048576;
   templateUrl: './image-upload.component.html',
   styleUrls: ['./image-upload.component.css'],
 
+
 })
 export class ImageUploadComponent implements OnInit {
 
   @Input('upload-config') opts: IImageUploadConfiguration;
 
-  @Input('imageUploadModel') files: Array<ImageUpload>;
+  //@Input('imageUploadModel') files: Array<ImageUpload>;
 
   @Output() onError: EventEmitter<any> = new EventEmitter();
 
+  public files: Array<ImageUpload>=[];
   public config: IImageUploadConfiguration;
 
   private fileReader: FileReader;
 
   private currentFile: File;
 
-  constructor() {
+  constructor(private imageDataService:ImageDataService ) {
 
     this.config = new ImageUploadConfiguration();
 
@@ -165,6 +168,9 @@ export class ImageUploadComponent implements OnInit {
 //local
     console.log("_fileReaderLoad push")
     this.files.push(img);
+    this.imageDataService.addImage(img);
+
+   // this.imageDataService.pushData(img);
     console.log("_fileReaderLoad end")
     //Upstream
   //  this.cd.viewToModelUpdate(this.files);

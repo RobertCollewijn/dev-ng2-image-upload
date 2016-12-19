@@ -3,15 +3,21 @@
 </h1>
 
 <image-upload
-              [(imageUploadModel)]="imageUploadModel"
+
               [upload-config]="imageUploadConfig"
               (onError)="onError($event)">
 </image-upload>
 
 <div style="border-top: dashed;border-color:lightgray;margin-top: 12px;padding-top:4px;">
+  <button (click)="getImages()">get</button>
   <div *ngIf="imageUploadModel.length>0">
     <h4>imageUploadModel</h4>
-    <pre>{{imageUploadModel | json }}</pre>
+    <div class="upload-item" *ngFor="let image of imageUploadModel; let i = index;">
+      <p class="upload-title">{{image.fileName}}</p>
+
+      <img [src]="image.data" style= "max-height:100px; max-width:100px;" />
+    </div>
+    <pre>{{imageUploadModel }}</pre>
   </div>
 </div>
 

@@ -8,17 +8,14 @@
     "npm": "3.10.x"
   },
   "scripts": {
-    "start": "http-server",
-    "lint": "tslint \"src/**/*.ts\"",
-    "test": "ng test",
-    "pree2e": "webdriver-manager update",
-    "e2e": "protractor",
-    "root": "dist/",
-    "routes": {
-      "/**": "index.html"
-    },
-    "preinstall":"npm install -g http-server",
-    "postinstall":"ng build --prod"
+    "_heroku":"https://dev-ng2-image-upload.herokuapp.com/",
+    "start":        "http-server dist/",
+    "lint":         "tslint \"src/**/*.ts\"",
+    "test":         "ng test",
+    "pree2e":       "webdriver-manager update",
+    "e2e":          "protractor",
+    "preinstall":   "npm install -g http-server",
+    "postinstall":  "ng build --prod"
   },
   "private": true,
   "dependencies": {

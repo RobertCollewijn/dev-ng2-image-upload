@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "license": "MIT",
   "angular-cli": {},
-
+  "engines": {
+    "node": "7.2.0",
+    "npm": "3.10.x"
+  },
   "scripts": {
     "start": "http-server",
     "lint": "tslint \"src/**/*.ts\"",
@@ -15,7 +18,7 @@
       "/**": "index.html"
     },
     "preinstall":"npm install -g http-server",
-    "postinstall":"ng build && mv dist/*"
+    "postinstall":"ng build"
   },
   "private": true,
   "dependencies": {

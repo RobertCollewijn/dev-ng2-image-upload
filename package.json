@@ -18,7 +18,7 @@
       "/**": "index.html"
     },
     "preinstall":"npm install -g http-server",
-    "postinstall":"ng build"
+    "postinstall":"ng build --prod"
   },
   "private": true,
   "dependencies": {

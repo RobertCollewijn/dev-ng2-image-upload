@@ -4,24 +4,29 @@
     <h4 *ngIf="files.length > 0">{{config.uploadedHeader}}</h4>
 
     <div class="upload-container">
-      <div class="upload-item" *ngFor="let image of files; let i = index;">
+      <div class="upload-item" [style.max-width]="config.style_maxWidth" *ngFor="let image of files; let i = index;">
         <p class="upload-title">{{image.fileName}}</p>
         <div class="image-area">
           <div class="upload-item-overlay">
             <span class="remove-upload" (click)="removeImage(i)">×</span>
           </div>
-          <img [src]="image.data" [style.max-height]="config.style_maxHeight" [style.max-width]="config.style_maxWidth" />
+          <img [src]="image.data" [style.max-height]="config.style_maxHeight"
+               [style.max-width]="config.style_maxWidth"/>
         </div>
         <p class="upload-title">{{image | imageProportions}}</p>
 
         <p class="upload-file-size">{{image.size | fileSize:1}}</p>
       </div>
+      <div>
+        <app-image-upload-dropzone></app-image-upload-dropzone>
+        <app-image-upload-button></app-image-upload-button>
+      </div>
     </div>
 
     <h4>{{config.addSectionHeader}}</h4>
-    <input #fileUpload style="display: none;" type="file" [accept]="config.accepts"  multiple = "multiple" (change)="upload(fileUpload.files, fileUpload)" />
-    <button (click)="fileUpload.click();" class="btn btn-primary"><i class="fa fa-upload"></i> {{config.buttonLabel}}</button>
-    <p *ngIf="config.accepts.indexOf('image/*') === -1"><small>Accepted image formats: {{config.accepts + " " + config.accepts.indexOf('image/*')}}</small></p>
+    <p *ngIf="config.accepts.indexOf('image/*') === -1">
+      <small>Accepted image formats: {{config.accepts + " " + config.accepts.indexOf('image/*')}}</small>
+    </p>
 
   </div>
 </div>

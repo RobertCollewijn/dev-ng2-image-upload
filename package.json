@@ -1,8 +1,11 @@
 {
   "name": "dev-ng2-image-upload",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "angular-cli": {},
+  "engines": {
+    "node": "4.1.1"
+  },
   "scripts": {
     "start": "http-server",
     "lint": "tslint \"src/**/*.ts\"",

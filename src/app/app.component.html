@@ -1,11 +1,16 @@
-<h1 style="border-bottom: dashed;border-color:lightgray;margin-bottom: 4px;padding-bottom:12px;">
+<div style="border-bottom: dashed;border-color:lightgray;margin-bottom: 4px;padding-bottom:12px;">
+<h1 >
   {{title}}
 </h1>
+<p>
+  This module uploads images from the device (PC, mobile) to the web-app.<br>
+  The image is converted into a base64 string and with the file and image properties 'saved' in the imageObject.
+</p>
+</div>
 
 <image-upload
-
               [upload-config]="imageUploadConfig"
-              (onError)="onError($event)">
+               (onError)="onError($event)">
 </image-upload>
 
 <div style="border-top: dashed;border-color:lightgray;margin-top: 12px;padding-top:4px;">

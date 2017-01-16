@@ -1,0 +1,25 @@
+
+.image-dropzone{
+  position: relative;
+  display: block;
+  width: 120px;
+  text-align: center;
+  border: dashed;
+  border-radius: 25px;
+  border-color:lightgray;
+  height:180px;
+  clear: both;
+  margin-bottom:8px;
+}
+.image-dropzoneHover{
+  border-color:gray;
+}
+
+
+.image-dropzone:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  align-content: center;
+}

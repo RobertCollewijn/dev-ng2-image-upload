@@ -1,6 +1,7 @@
 import {ImageUpload} from "../models/image-upload.model";
 import {EventEmitter} from "@angular/core";
 import {Observable, Subject} from "rxjs";
+
 export class ImageDataService {
 
   pushedData = new EventEmitter<ImageUpload>();
